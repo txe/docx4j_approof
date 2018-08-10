@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/docx4j_preview.iml" filepath="$PROJECT_DIR$/docx4j_preview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/docx4j_approof.iml" filepath="$PROJECT_DIR$/docx4j_approof.iml" />
     </modules>
   </component>
 </project>
