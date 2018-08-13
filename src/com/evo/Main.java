@@ -1,16 +1,42 @@
 package com.evo;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        //testWordReport();
+        testRealWordReport();
+        //testSimpleWordReport();
         //testExcelReport();
     }
 
-    private static void testWordReport() {
+    private static void testRealWordReport() {
+
+        CandidateReportCtx ctx = new CandidateReportCtx();
+        ctx.CandidateName = "John Doe";
+        ctx.CurrentDate = new Date().toString();
+        ctx.MaritalStatus = "kids";
+
+        ctx.CareerList = new ArrayList<CandidateReportCtx.RowData>();
+        ctx.CareerList.add(ctx.createRowData("1992", "Moscow", "some note"));
+        ctx.CareerList.add(ctx.createRowData("1995", "Moscow", "second note"));
+
+        ctx.CareerExpList = new ArrayList<CandidateReportCtx.RowData>();
+        ctx.CareerExpList.add(ctx.createRowData("1992", "Manager", ""));
+        ctx.CareerExpList.add(ctx.createRowData("1995", "Programmer", ""));
+
+        ctx.EduList = new ArrayList<CandidateReportCtx.RowData>();
+        ctx.EduList.add(ctx.createRowData("1992-1997", "MGU", "some note"));
+
+        ctx.EduExpList = new ArrayList<CandidateReportCtx.RowData>();
+        ctx.EduExpList.add(ctx.createRowData("1998", "Course - Manager", "sp1", "more notes"));
+        ctx.EduExpList.add(ctx.createRowData("1999", "Course - Analize", "sp2", "second note"));
+
+        new WordReport().generate2("F:/candidate_template.docx", "F:/candidate.docx", ctx);
+    }
+
+    private static void testSimpleWordReport() {
 
         // template uses $(myField), but we pass it as myField
         HashMap<String, String> placeholders = new HashMap<String, String>() {
@@ -34,4 +60,5 @@ public class Main {
 
         new ExcelReport().generate("F:/result_2.xlsx", tableData);
     }
+
 }
