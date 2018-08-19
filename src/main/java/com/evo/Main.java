@@ -6,9 +6,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        testRealWordReport();
+        //testRealWordReport();
         //testSimpleWordReport();
-        //testExcelReport();
+        testExcelReport();
     }
 
     private static void testRealWordReport() {
@@ -52,13 +52,16 @@ public class Main {
 
     private static void testExcelReport() {
 
-        Object[] row1 = {"cell", 123 };
-        Object[] row2 = {"hi", "world" };
-        Object[] row3 = {};
-        Object[] row4 = {456, "789" };
+        // make sure rows have the same amount of cells
+        Object[] row1 = {"cell", 123, 234.5 };
+        Object[] row2 = {"hi", "world", "" };
+        Object[] row3 = {"", "", ""};
+        Object[] row4 = {456, "789", "" };
         Object[][] tableData = {row1, row2, row3, row4 };
 
-        new ExcelReport().generate("F:/result_2.xlsx", tableData);
+        double[] widths = {10, 20, 30};
+
+        new ExcelReport().generate("F:/result_2.xlsx", tableData, widths);
     }
 
 }
