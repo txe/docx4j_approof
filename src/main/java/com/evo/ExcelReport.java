@@ -44,6 +44,8 @@ public class ExcelReport {
 
             SheetData sheetData = sheet.getJaxbElement().getSheetData();
 
+            final long simpleStyle = 1;
+            final long headerStyle = 2;
             for (int rowIndex = 0; rowIndex < tableData.length; ++rowIndex) {
 
                 // Create a new row
@@ -51,14 +53,15 @@ public class ExcelReport {
                 row.setR((long) rowIndex + 1);
 
                 Object[] tableRow = tableData[rowIndex];
+                long style = rowIndex == 0 ? headerStyle : simpleStyle;
                 for (int columnIndex = 0; columnIndex < tableRow.length; ++columnIndex) {
                     Object value = tableRow[columnIndex];
                     if (value instanceof Integer)
-                        row.getC().add(newNumberCell(value.toString()));
+                        row.getC().add(newNumberCell(value.toString(), style));
                     else if (value instanceof Double)
-                        row.getC().add(newNumberCell(value.toString()));
+                        row.getC().add(newNumberCell(value.toString(), style));
                     else // for string special case
-                        row.getC().add(newCellWithInlineString(value.toString()));
+                        row.getC().add(newCellWithInlineString(value.toString(), style));
                 }
 
                 // Add the row to our sheet
@@ -72,15 +75,15 @@ public class ExcelReport {
         }
     }
 
-    private Cell newNumberCell(String content)
+    private Cell newNumberCell(String content, long style)
     {
         Cell cell = Context.getsmlObjectFactory().createCell();
         cell.setV(content);
-        cell.setS((long)1);
+        cell.setS(style);
         return cell;
     }
 
-    private Cell newCellWithInlineString(String content) {
+    private Cell newCellWithInlineString(String content, long style) {
 
         CTXstringWhitespace ctx = Context.getsmlObjectFactory().createCTXstringWhitespace();
         ctx.setValue(content);
@@ -91,7 +94,7 @@ public class ExcelReport {
         Cell newCell = Context.getsmlObjectFactory().createCell();
         newCell.setIs(ctrst);
         newCell.setT(STCellType.INLINE_STR);
-        newCell.setS((long)1);
+        newCell.setS(style);
         return newCell;
     }
 
@@ -111,7 +114,7 @@ public class ExcelReport {
                 + "<numFmts count=\"1\">"
                 + "<numFmt formatCode=\"General\" numFmtId=\"164\"/>"
                 +"</numFmts>"
-                + "<fonts count=\"4\">"
+                + "<fonts count=\"5\">"
                 + "<font>"
                 + "<sz val=\"10.0\"/>"
                 + "<name val=\"Arial\"/>"
@@ -131,6 +134,13 @@ public class ExcelReport {
                 + "<sz val=\"10.0\"/>"
                 + "<name val=\"Arial\"/>"
                 + "<family val=\"0\"/>"
+                +"</font>"
+                +"<font>"
+                +"<b val=\"true\"/>"
+                +"<sz val=\"10.0\"/>"
+                +"<name val=\"Arial\"/>"
+                +"<family val=\"2\"/>"
+                +"<charset val=\"1\"/>"
                 +"</font>"
                 +"</fonts>"
                 + "<fills count=\"2\">"
@@ -182,13 +192,17 @@ public class ExcelReport {
                 + "<xf applyAlignment=\"false\" applyBorder=\"false\" applyFont=\"true\" applyProtection=\"false\" borderId=\"0\" fillId=\"0\" fontId=\"1\" numFmtId=\"42\"/>"
                 + "<xf applyAlignment=\"false\" applyBorder=\"false\" applyFont=\"true\" applyProtection=\"false\" borderId=\"0\" fillId=\"0\" fontId=\"1\" numFmtId=\"9\"/>"
                 +"</cellStyleXfs>"
-                + "<cellXfs count=\"2\">"
+                + "<cellXfs count=\"3\">"
                 + "<xf applyAlignment=\"false\" applyBorder=\"false\" applyFont=\"false\" applyProtection=\"false\" borderId=\"0\" fillId=\"0\" fontId=\"0\" numFmtId=\"164\" xfId=\"0\">"
                 + "<alignment horizontal=\"general\" indent=\"0\" shrinkToFit=\"false\" textRotation=\"0\" vertical=\"bottom\" wrapText=\"false\"/>"
                 + "<protection hidden=\"false\" locked=\"true\"/>"
                 +"</xf>"
                 + "<xf applyAlignment=\"false\" applyBorder=\"true\" applyFont=\"false\" applyProtection=\"false\" borderId=\"1\" fillId=\"0\" fontId=\"0\" numFmtId=\"164\" xfId=\"0\">"
                 + "<alignment horizontal=\"general\" indent=\"0\" shrinkToFit=\"false\" textRotation=\"0\" vertical=\"bottom\" wrapText=\"false\"/>"
+                + "<protection hidden=\"false\" locked=\"true\"/>"
+                +"</xf>"
+                + "<xf applyAlignment=\"false\" applyBorder=\"true\" applyFont=\"true\" applyProtection=\"false\" borderId=\"1\" fillId=\"0\" fontId=\"4\" numFmtId=\"164\" xfId=\"0\">"
+                + "<alignment horizontal=\"center\" indent=\"0\" shrinkToFit=\"false\" textRotation=\"0\" vertical=\"center\" wrapText=\"false\"/>"
                 + "<protection hidden=\"false\" locked=\"true\"/>"
                 +"</xf>"
                 +"</cellXfs>"
